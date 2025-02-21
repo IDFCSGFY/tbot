@@ -25,7 +25,8 @@ public class NotificationTask {
         this.text = text;
     }
 
-    public NotificationTask() {}
+    public NotificationTask() {
+    }
 
     public long getID() {
         return ID;

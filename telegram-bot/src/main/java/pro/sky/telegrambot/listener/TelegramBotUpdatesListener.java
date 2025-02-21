@@ -33,25 +33,25 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
     public int process(List<Update> updates) {
         updates.forEach(update -> {
             logger.info("Processing update: {}", update);
-            if(update.message().text().equals("/start")){
+            if (update.message().text().equals("/start")) {
                 SendMessage sendMessage = new SendMessage(update.message().chat().id(), "The bot was started");
                 telegramBot.execute(sendMessage);
-            } else if (!update.message().text().isEmpty()){
+            } else if (!update.message().text().isEmpty()) {
                 SendMessage sendMessage = null;
                 try {
                     sendMessage = new SendMessage(update.message().chat().id(), service.newNotification(update.message().text(), update.message().chat().id()).toString());
                 } catch (UnparsableDataTimeException e) {
                     StringBuilder rowIfNeeded = new StringBuilder();
-                    if(!(e.getMessage() == null)){
+                    if (!(e.getMessage() == null)) {
                         rowIfNeeded.append(" in ");
                         rowIfNeeded.append(e.getMessage());
                     }
                     sendMessage = new SendMessage(update.message().chat().id(),
                             """
-                                **Oops!** Seems like I'm having troubles reading your date format%s. \r
-                                Please, try using the following format: \r
-                                **dd.mm.yyyy hh:mm** <here is your notification text!>
-                                """.formatted(rowIfNeeded));
+                                    **Oops!** Seems like I'm having troubles reading your date format%s. \r
+                                    Please, try using the following format: \r
+                                    **dd.mm.yyyy hh:mm** <here is your notification text!>
+                                    """.formatted(rowIfNeeded));
                 }
                 telegramBot.execute(sendMessage);
             }
